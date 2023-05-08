@@ -1,0 +1,15 @@
+all:
+  children:
+    dbservers:
+      hosts:
+        node1:
+          ansible_host: 3.252.55.44
+          ansible_ssh_private_key_file: /home/ec2-user/<pass>.pem
+          ansible_user: ec2-user
+    ungrouped: {}
+    webservers:
+      hosts:
+        node2:
+          ansible_host: 63.33.71.164
+          ansible_ssh_private_key_file: /home/ec2-user/<pass>.pem
+          ansible_user: ec2-user
