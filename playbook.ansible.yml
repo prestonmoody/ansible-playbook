@@ -1,0 +1,45 @@
+---
+- name: Webserver Conf
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install Apache Webserver
+      ansible.builtin.package:
+        name: "{{ apache }}"
+        state: present
+
+    - name: enable Apache Webserver
+      ansible.builtin.systemd:
+        name: "{{ apache }}"
+        enabled: true 
+        state: started
+        masked: no
+
+    - name: Copy index.html
+      ansible.builtin.copy:
+        src: ./index.html
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: '0644'
+        backup: yes
+
+- name: User Conf
+  hosts: all
+  become: yes
+  tasks:
+    - name: Create a User
+      ansible.builtin.user:
+        name: guest
+        create_home: true
+        expires: -1
+        shell: /bin/bash
+
+- name: Remove Apache Webserver
+  hosts: ubuntuserver
+  become: yes
+  tasks: 
+    - name: Remove Webserver
+      ansible.builtin.package:
+        name: "{{apache}}"
+        state: absent
